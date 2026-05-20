@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: support-agent-endpoint
+model:
+  name: support-agent-faiss-index
+  path: ../artifacts/faiss_index
+code_configuration:
+  code: ..
+  scoring_script: azureml/score.py
+environment: azureml/environment.yml
+instance_type: Standard_DS3_v2
+instance_count: 1
+environment_variables:
+  OPENAI_MODEL: gpt-4.1-mini
+  OPENAI_EMBEDDING_MODEL: text-embedding-3-small
+request_settings:
+  request_timeout_ms: 30000

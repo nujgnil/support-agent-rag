@@ -1,0 +1,10 @@
+azure-ai-ml>=1.24.0
+azure-identity>=1.19.0
+faiss-cpu>=1.9.0
+numpy>=1.26.0
+openai>=1.59.0
+pandas>=2.2.0
+python-dotenv>=1.0.1
+PyYAML>=6.0.2
+streamlit>=1.40.0
+pytest>=8.3.0

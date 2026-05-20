@@ -1,0 +1,6 @@
+ticket_id,customer_name,subject,description,priority,created_at
+TCK-1001,Ava Chen,Unable to reset password,"I requested a password reset link three times but the email never arrived. I checked spam and still cannot access my account.",high,2026-05-01T09:15:00
+TCK-1002,Marcus Lee,Billing invoice mismatch,"The invoice shows the Pro plan but our account was downgraded to Starter last month. Please correct the billing amount.",medium,2026-05-02T14:20:00
+TCK-1003,Nora Patel,API rate limit errors,"Our integration started receiving 429 errors after the latest traffic spike. We need guidance on rate limits and retry behavior.",high,2026-05-03T18:45:00
+TCK-1004,Jon Rivera,Export failed,"The CSV export job finishes with a failed status for reports over 50,000 rows.",medium,2026-05-04T11:05:00
+TCK-1005,Mina Tan,Need SSO setup help,"We want to configure SAML SSO for our enterprise workspace and need the ACS URL and metadata steps.",low,2026-05-05T08:30:00
