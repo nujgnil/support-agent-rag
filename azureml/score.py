@@ -19,7 +19,12 @@ def init() -> None:
     settings = load_settings()
     model_dir = os.getenv("AZUREML_MODEL_DIR")
     if model_dir:
-        candidate = Path(model_dir) / "faiss_index"
+        mounted_model = Path(model_dir)
+        candidate = (
+            mounted_model / "faiss_index"
+            if (mounted_model / "faiss_index").exists()
+            else mounted_model
+        )
         if candidate.exists():
             settings = Settings(
                 openai_api_key=settings.openai_api_key,

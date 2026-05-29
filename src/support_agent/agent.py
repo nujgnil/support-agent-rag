@@ -61,7 +61,7 @@ Use the product documentation context to answer the ticket. If context is missin
 
 Return exactly these fields:
 Sentiment: <positive|neutral|negative|urgent>
-Category: <account_access|billing|api_limits|data_export|sso|general_support>
+Category: <credit_reporting|debt_collection|credit_card_dispute|bank_account|money_transfer|mortgage_servicing|general_support>
 Response: <customer-facing response>
 
 Product documentation:
