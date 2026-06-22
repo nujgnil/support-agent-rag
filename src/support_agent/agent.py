@@ -20,8 +20,10 @@ class AgentResult:
 class SupportAgent:
     def __init__(self, settings: Settings | None = None) -> None:
         self.settings = settings or load_settings()
+        if not self.settings.use_openai:
+            raise ValueError("USE_OPENAI is false. Use OfflineSupportAgent instead.")
         if not self.settings.openai_api_key:
-            raise ValueError("OPENAI_API_KEY is required.")
+            raise ValueError("OPENAI_API_KEY is required when USE_OPENAI=true.")
 
         self.client = OpenAI(api_key=self.settings.openai_api_key)
         self.embedder = OpenAIEmbedder(

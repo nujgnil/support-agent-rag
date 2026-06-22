@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from support_agent.agent import SupportAgent
 from support_agent.config import load_settings
 from support_agent.ingestion import load_support_tickets
+from support_agent.offline_agent import OfflineSupportAgent
 
 
 st.set_page_config(page_title="Customer Support Agent", page_icon=":headphones:", layout="wide")
@@ -21,9 +22,13 @@ st.title("Customer Support Agent")
 
 with st.sidebar:
     st.header("Pipeline")
-    st.caption("OpenAI embeddings -> FAISS retrieval -> RAG response")
-    st.text_input("Chat model", value=settings.openai_model, disabled=True)
-    st.text_input("Embedding model", value=settings.openai_embedding_model, disabled=True)
+    if settings.use_openai:
+        st.caption("OpenAI embeddings -> FAISS retrieval -> RAG response")
+        st.text_input("Chat model", value=settings.openai_model, disabled=True)
+        st.text_input("Embedding model", value=settings.openai_embedding_model, disabled=True)
+    else:
+        st.caption("Offline hashing embeddings -> FAISS retrieval -> rule-based response")
+        st.text_input("Mode", value="Offline / no API cost", disabled=True)
 
 try:
     tickets = load_support_tickets(settings.support_tickets_path)
@@ -48,10 +53,13 @@ with right:
     if run:
         try:
             with st.spinner("Retrieving docs and generating response..."):
-                result = SupportAgent(settings).analyze(ticket_text)
+                if settings.use_openai:
+                    result = SupportAgent(settings).analyze(ticket_text)
+                else:
+                    result = OfflineSupportAgent(settings.faiss_index_dir).analyze(ticket_text)
         except Exception as exc:
             st.error(str(exc))
-            st.info("Check OPENAI_API_KEY and run `python scripts/build_index.py` first.")
+            st.info("Run `python scripts/build_index.py` first. Only set OPENAI_API_KEY if USE_OPENAI=true.")
             st.stop()
 
         metric_cols = st.columns(2)

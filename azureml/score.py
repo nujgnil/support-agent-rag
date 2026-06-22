@@ -10,8 +10,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from support_agent.agent import SupportAgent
 from support_agent.config import Settings, load_settings
+from support_agent.offline_agent import OfflineSupportAgent
 
-agent: SupportAgent | None = None
+agent: SupportAgent | OfflineSupportAgent | None = None
 
 
 def init() -> None:
@@ -27,6 +28,7 @@ def init() -> None:
         )
         if candidate.exists():
             settings = Settings(
+                use_openai=settings.use_openai,
                 openai_api_key=settings.openai_api_key,
                 openai_model=settings.openai_model,
                 openai_embedding_model=settings.openai_embedding_model,
@@ -34,7 +36,10 @@ def init() -> None:
                 product_docs_dir=settings.product_docs_dir,
                 support_tickets_path=settings.support_tickets_path,
             )
-    agent = SupportAgent(settings)
+    if settings.use_openai:
+        agent = SupportAgent(settings)
+    else:
+        agent = OfflineSupportAgent(settings.faiss_index_dir)
 
 
 def run(raw_data: str) -> str:

@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 @dataclass(frozen=True)
 class Settings:
+    use_openai: bool
     openai_api_key: str | None
     openai_model: str
     openai_embedding_model: str
@@ -19,7 +20,14 @@ class Settings:
 
 def load_settings() -> Settings:
     load_dotenv()
+    use_openai = os.getenv("USE_OPENAI", "false").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "y",
+    }
     return Settings(
+        use_openai=use_openai,
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         openai_model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
         openai_embedding_model=os.getenv(
